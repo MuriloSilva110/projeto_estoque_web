@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Produto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Ficha do Produto</h3>
+            </div>
+            
+            <div class="card-body">
+                
+                <h2 class="card-title">{{ produto.nome }}</h2>
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Preço:</strong> <span class="fs-4 text-success">R$ {{ "%.2f"|format(produto.preco) }}</span></p>
+                        <p><strong>Código Interno:</strong> {{ produto.codigo_interno }}</p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p><strong>Categoria:</strong> {{ produto.categoria.nome }}</p>
+                        <p><strong>Fornecedor:</strong> {{ produto.fornecedor.nome }}</p>
+                        <p><strong>Telefone Fornecedor:</strong> {{ produto.fornecedor.telefone }}</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="{{ url_for('listar_produtos') }}" class="btn btn-secondary">Voltar</a>
+                <a href="{{ url_for('atualizar_produto', produto_id=produto.id) }}" class="btn btn-warning">Editar</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

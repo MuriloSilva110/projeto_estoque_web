@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Lista de Fornecedores{% endblock %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Fornecedores Cadastrados</h2>
+        <a href="{{ url_for('criar_fornecedor') }}" class="btn btn-primary">+ Novo Fornecedor</a>
+    </div>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fornecedor in fornecedores %}
+            <tr>
+                <td>{{ fornecedor.nome }}</td>
+                <td>{{ fornecedor.telefone }}</td>
+                <td>
+                    <a href="{{ url_for('atualizar_fornecedor', fornecedor_id=fornecedor.id) }}" class="btn btn-sm btn-warning">
+                        Editar
+                    </a>
+                    <a href="{{ url_for('deletar_fornecedor', fornecedor_id=fornecedor.id) }}" 
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Tem certeza que deseja excluir?');">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

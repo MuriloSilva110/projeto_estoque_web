@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="text-center">Acessar Sistema</h3>
+                <hr>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", placeholder="seu@email.com") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.senha.label(class="form-label") }}
+                        {{ form.senha(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        {{ form.lembrar(class="form-check-input") }}
+                        {{ form.lembrar.label(class="form-check-label") }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+                
+                <div class="mt-3 text-center">
+                    <small class="text-muted">
+                        Ainda não tem conta? <a href="{{ url_for('cadastro') }}">Cadastre-se aqui</a>
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

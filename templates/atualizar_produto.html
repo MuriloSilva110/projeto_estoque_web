@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Atualizar Produto{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+
+                    <h2>Atualizar Produto</h2>
+                    <hr>
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.nome.label(class="form-label") }}
+                            {{ form.nome(class="form-control") }}
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6"> {{ form.preco.label(class="form-label") }}
+                                {{ form.preco(class="form-control", placeholder="0.00") }}
+                            </div>
+                            <div class="col-md-6"> {{ form.codigo_interno.label(class="form-label") }}
+                                {{ form.codigo_interno(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.fornecedor_id.label(class="form-label") }}
+                                {{ form.fornecedor_id(class="form-select") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.categoria_id.label(class="form-label") }}
+                                {{ form.categoria_id(class="form-select") }}
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="d-grid gap-2 d-md-block">
+                            {{ form.submit(class="btn btn-primary", value="Atualizar Produto") }}
+                            <a href="{{ url_for('listar_produtos') }}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

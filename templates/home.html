@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Home{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-5">
+        <h1 class="display-4">Visão Geral do Estoque</h1>
+        <p class="lead">Bem-vindo ao sistema de gerenciamento.</p>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3 shadow">
+                <div class="card-header">Valor em Estoque</div>
+                <div class="card-body">
+                    <h2 class="card-title">R$ {{ "%.2f"|format(valor_total_estoque) }}</h2>
+                    <p class="card-text">Soma de todos os produtos.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3 shadow">
+                <div class="card-header">Produtos</div>
+                <div class="card-body">
+                    <h2 class="card-title">{{ total_produtos }}</h2>
+                    <p class="card-text">Itens cadastrados.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3 shadow">
+                <div class="card-header">Fornecedores</div>
+                <div class="card-body">
+                    <h2 class="card-title">{{ total_fornecedores }}</h2>
+                    <p class="card-text">Parceiros ativos.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3 shadow">
+                <div class="card-header">Categorias</div>
+                <div class="card-body">
+                    <h2 class="card-title">{{ total_categorias }}</h2>
+                    <p class="card-text">Departamentos.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <a href="{{ url_for('criar_produto') }}" class="btn btn-outline-primary btn-lg mx-2">Adicionar Produto</a>
+            <a href="{{ url_for('listar_produtos') }}" class="btn btn-outline-secondary btn-lg mx-2">Ver Estoque Completo</a>
+        </div>
+    </div>
+
+{% endblock %}

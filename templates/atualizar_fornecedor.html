@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Atualizar Fornecedor{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center"> 
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body"> 
+                    <h2>Atualizar Fornecedor</h2>
+                    <hr>
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.nome.label(class="form-label") }}
+                            {{ form.nome(class="form-control", placeholder="Ex: Distribuidora Aço Forte") }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.telefone.label(class="form-label") }}
+                            {{ form.telefone(class="form-control", placeholder="Ex: (11) 99999-9999") }}
+                        </div>
+
+                        <br>
+                        <div class="d-grid gap-2 d-md-block">
+                            {{ form.submit(class="btn btn-success") }}
+                            <a href="{{ url_for('listar_fornecedores') }}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

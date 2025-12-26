@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Produtos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Produtos Cadastrados</h2>
+    <a href="{{ url_for('criar_produto') }}" class="btn btn-primary">+ Novo Produto</a>
+</div>
+
+<div class="card mb-4 bg-light">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('listar_produtos') }}">
+                
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <input type="text" name="q" class="form-control" 
+                               placeholder="Buscar nome..." 
+                               value="{{ request.args.get('q', '') }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="cat" class="form-select">
+                            <option value="">Todas as Categorias</option>
+                            {% for c in categorias %}
+                                <option value="{{ c.id }}" {% if request.args.get('cat')|int == c.id %}selected{% endif %}>
+                                    {{ c.nome }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="forn" class="form-select">
+                            <option value="">Todos os Fornecedores</option>
+                            {% for f in fornecedores %}
+                                <option value="{{ f.id }}" {% if request.args.get('forn')|int == f.id %}selected{% endif %}>
+                                    {{ f.nome }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-dark w-100">
+                            <i class="bi bi-filter"></i> Filtrar
+                        </button>
+                    </div>
+                </div>
+
+                {% if request.args.get('q') or request.args.get('cat') or request.args.get('forn') %}
+                <div class="mt-2 text-end">
+                    <a href="{{ url_for('listar_produtos') }}" class="text-danger text-decoration-none small">
+                        ✖ Limpar todos os filtros
+                    </a>
+                </div>
+                {% endif %}
+
+            </form>
+        </div>
+</div>
+
+<table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Cód. Interno</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+            <tr>
+                <td>{{ produto.codigo_interno }}</td>
+                
+                <td>{{ produto.nome }}</td>
+                <td>R$ {{ "%.2f"|format(produto.preco) }}</td>
+                <td>
+                    <a href="{{ url_for('detalhes_produto', produto_id=produto.id) }}" class="btn btn-sm btn-info" title="Ver Detalhes">
+                        <i class="bi bi-eye"></i> Ver </a>
+
+                    <a href="{{ url_for('atualizar_produto', produto_id=produto.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                    
+                    <a href="{{ url_for('deletar_produto', produto_id=produto.id) }}" 
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Tem certeza?');">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
