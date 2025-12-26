@@ -66,8 +66,18 @@ class Produto(db.Model):
     def __repr__(self):
         return f"Produto('{self.nome}', '{self.preco}', '{self.codigo_interno}')"
 
+# ... (todo o seu código acima) ...
+
+# --- BLOCO QUE CRIA O BANCO NO RENDER ---
 with app.app_context():
+    # Vamos adicionar este print para ver nos logs se ele passa aqui
+    print(">>> VERIFICANDO E CRIANDO TABELAS DO BANCO DE DADOS... <<<")
     db.create_all()
+    print(">>> TABELAS CRIADAS COM SUCESSO! <<<")
+# ----------------------------------------
+
+if __name__ == '__main__':
+    app.run(debug=True)
 # Rota Home
 @app.route('/')
 def home():
