@@ -65,6 +65,9 @@ class Produto(db.Model):
 
     def __repr__(self):
         return f"Produto('{self.nome}', '{self.preco}', '{self.codigo_interno}')"
+
+with app.app_context():
+    db.create_all()
 # Rota Home
 @app.route('/')
 def home():
