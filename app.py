@@ -309,6 +309,41 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+# --- ROTA PARA POPULAR O BANCO (SETUP DEMO) ---
+@app.route('/setup_demo')
+def setup_demo():
+    # 1. Limpa tudo para evitar duplicatas (Cuidado: apaga dados reais!)
+    db.drop_all()
+    db.create_all()
+
+    # 2. Cria Usuário Admin
+    # Gera o hash da senha '123456'
+    senha_hash = bcrypt.generate_password_hash('123456').decode('utf-8')
+    admin = Usuario(username='Admin', email='admin@example.com', senha=senha_hash)
+    db.session.add(admin)
+
+    # 3. Cria Categorias (Essencial para o Select funcionar!)
+    cat1 = Categoria(nome='Eletrônicos', descricao='Gadgets e afins')
+    cat2 = Categoria(nome='Móveis', descricao='Escritório e Casa')
+    db.session.add_all([cat1, cat2])
+    db.session.commit() # Salva para gerar os IDs
+
+    # 4. Cria Fornecedores
+    forn1 = Fornecedor(nome='Tech Distribuidora', contato='vendas@tech.com')
+    forn2 = Fornecedor(nome='Madeira & Cia', contato='suporte@madeira.com')
+    db.session.add_all([forn1, forn2])
+    db.session.commit()
+
+    # 5. Cria Produtos Iniciais
+    prod1 = Produto(nome='Monitor 24pol', preco=850.00, codigo_interno='MON-24', categoria_id=cat1.id, fornecedor_id=forn1.id)
+    prod2 = Produto(nome='Cadeira Office', preco=450.00, codigo_interno='CAD-01', categoria_id=cat2.id, fornecedor_id=forn2.id)
+    db.session.add_all([prod1, prod2])
+    
+    db.session.commit()
+
+    return "<h1>Banco de Dados Populado! 🚀</h1><p>Use: admin@example.com / 123456</p>"
 # Inicializa o app
 if __name__ == '__main__':
     app.run(debug=True)
