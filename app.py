@@ -321,18 +321,18 @@ def setup_demo():
     # 2. Cria Usuário Admin
     # Gera o hash da senha '123456'
     senha_hash = bcrypt.generate_password_hash('123456').decode('utf-8')
-    admin = Usuario(username='Admin', email='admin@example.com', senha=senha_hash)
+    admin = Usuario(username='Admin', email='admin@example.com', password=senha_hash)
     db.session.add(admin)
 
     # 3. Cria Categorias (Essencial para o Select funcionar!)
-    cat1 = Categoria(nome='Eletrônicos', descricao='Gadgets e afins')
-    cat2 = Categoria(nome='Móveis', descricao='Escritório e Casa')
+    cat1 = Categoria(nome='Eletrônicos')
+    cat2 = Categoria(nome='Móveis')
     db.session.add_all([cat1, cat2])
     db.session.commit() # Salva para gerar os IDs
 
     # 4. Cria Fornecedores
-    forn1 = Fornecedor(nome='Tech Distribuidora', contato='vendas@tech.com')
-    forn2 = Fornecedor(nome='Madeira & Cia', contato='suporte@madeira.com')
+    forn1 = Fornecedor(nome='Tech Distribuidora', telefone='vendas@tech.com')
+    forn2 = Fornecedor(nome='Madeira & Cia', telefone='suporte@madeira.com')
     db.session.add_all([forn1, forn2])
     db.session.commit()
 
