@@ -312,38 +312,52 @@ def logout():
 
 
 # --- ROTA PARA POPULAR O BANCO (SETUP DEMO) ---
+# --- ROTA MÁGICA 2.0 (MAIS DADOS) ---
 @app.route('/setup_demo')
 def setup_demo():
-    # 1. Limpa tudo para evitar duplicatas (Cuidado: apaga dados reais!)
+    # 1. Limpa tudo e recria as tabelas
     db.drop_all()
     db.create_all()
 
     # 2. Cria Usuário Admin
-    # Gera o hash da senha '123456'
     senha_hash = bcrypt.generate_password_hash('123456').decode('utf-8')
+    # Nota: Usando 'password' conforme a correção que fizemos antes
     admin = Usuario(username='Admin', email='admin@example.com', password=senha_hash)
     db.session.add(admin)
 
-    # 3. Cria Categorias (Essencial para o Select funcionar!)
-    cat1 = Categoria(nome='Eletrônicos')
-    cat2 = Categoria(nome='Móveis')
-    db.session.add_all([cat1, cat2])
+    # 3. Cria 3 Categorias
+    cat1 = Categoria(nome='Eletrônicos', descricao='Gadgets e computadores')
+    cat2 = Categoria(nome='Móveis', descricao='Escritório e ergonomia')
+    cat3 = Categoria(nome='Acessórios', descricao='Periféricos e cabos')
+    db.session.add_all([cat1, cat2, cat3])
     db.session.commit() # Salva para gerar os IDs
 
-    # 4. Cria Fornecedores
-    forn1 = Fornecedor(nome='Tech Distribuidora', telefone='vendas@tech.com')
-    forn2 = Fornecedor(nome='Madeira & Cia', telefone='suporte@madeira.com')
-    db.session.add_all([forn1, forn2])
+    # 4. Cria 4 Fornecedores
+    forn1 = Fornecedor(nome='Tech Distribuidora', contato='vendas@tech.com')
+    forn2 = Fornecedor(nome='Madeira & Cia', contato='suporte@madeira.com')
+    forn3 = Fornecedor(nome='Mega Imports', contato='contato@megaimports.com')
+    forn4 = Fornecedor(nome='Logitech Official', contato='b2b@logitech.com')
+    db.session.add_all([forn1, forn2, forn3, forn4])
     db.session.commit()
 
-    # 5. Cria Produtos Iniciais
-    prod1 = Produto(nome='Monitor 24pol', preco=850.00, codigo_interno='MON-24', categoria_id=cat1.id, fornecedor_id=forn1.id)
-    prod2 = Produto(nome='Cadeira Office', preco=450.00, codigo_interno='CAD-01', categoria_id=cat2.id, fornecedor_id=forn2.id)
-    db.session.add_all([prod1, prod2])
+    # 5. Cria 6 Produtos Variados
+    prods = [
+        # Eletrônicos
+        Produto(nome='Monitor Dell 24pol', preco=850.00, codigo_interno='DELL-24', categoria_id=cat1.id, fornecedor_id=forn1.id),
+        Produto(nome='Notebook Lenovo i5', preco=3200.00, codigo_interno='LEN-i5', categoria_id=cat1.id, fornecedor_id=forn1.id),
+        
+        # Móveis
+        Produto(nome='Cadeira Office Ergo', preco=450.00, codigo_interno='CAD-Ergo', categoria_id=cat2.id, fornecedor_id=forn2.id),
+        Produto(nome='Mesa em L Branca', preco=1100.00, codigo_interno='MES-L', categoria_id=cat2.id, fornecedor_id=forn2.id),
+
+        # Acessórios
+        Produto(nome='Mouse Gamer Logitech', preco=150.00, codigo_interno='LOG-G203', categoria_id=cat3.id, fornecedor_id=forn4.id),
+        Produto(nome='Teclado Mecânico RGB', preco=280.00, codigo_interno='KEY-RGB', categoria_id=cat3.id, fornecedor_id=forn3.id)
+    ]
     
+    db.session.add_all(prods)
     db.session.commit()
 
-    return "<h1>Banco de Dados Populado! 🚀</h1><p>Use: admin@example.com / 123456</p>"
-# Inicializa o app
+    return "<h1>Banco de Dados Populado com Sucesso! 🚀</h1><p>3 Categorias, 4 Fornecedores e 6 Produtos criados.</p>"
 if __name__ == '__main__':
     app.run(debug=True)
