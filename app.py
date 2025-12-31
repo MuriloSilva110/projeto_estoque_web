@@ -326,17 +326,17 @@ def setup_demo():
     db.session.add(admin)
 
     # 3. Cria 3 Categorias
-    cat1 = Categoria(nome='Eletrônicos', descricao='Gadgets e computadores')
-    cat2 = Categoria(nome='Móveis', descricao='Escritório e ergonomia')
-    cat3 = Categoria(nome='Acessórios', descricao='Periféricos e cabos')
+    cat1 = Categoria(nome='Eletrônicos' )
+    cat2 = Categoria(nome='Móveis' )
+    cat3 = Categoria(nome='Acessórios')
     db.session.add_all([cat1, cat2, cat3])
     db.session.commit() # Salva para gerar os IDs
 
     # 4. Cria 4 Fornecedores
-    forn1 = Fornecedor(nome='Tech Distribuidora', contato='vendas@tech.com')
-    forn2 = Fornecedor(nome='Madeira & Cia', contato='suporte@madeira.com')
-    forn3 = Fornecedor(nome='Mega Imports', contato='contato@megaimports.com')
-    forn4 = Fornecedor(nome='Logitech Official', contato='b2b@logitech.com')
+    forn1 = Fornecedor(nome='Tech Distribuidora', telefone='vendas@tech.com')
+    forn2 = Fornecedor(nome='Madeira & Cia', telefone='suporte@madeira.com')
+    forn3 = Fornecedor(nome='Mega Imports', telefone='contato@megaimports.com')
+    forn4 = Fornecedor(nome='Logitech Official', telefone='b2b@logitech.com')
     db.session.add_all([forn1, forn2, forn3, forn4])
     db.session.commit()
 
