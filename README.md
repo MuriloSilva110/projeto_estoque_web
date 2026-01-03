@@ -14,13 +14,16 @@
 
 ---
 
+---
+
 ## 📺 Demonstração do Sistema
 
 <div align="center">
-  <img src="![Image](https://github.com/user-attachments/assets/33f1cab2-2e4c-4b63-b1cd-2a04c1f6c858)" alt="GIF de Demonstração do Sistema" width="850px">
+  <img src="https://github.com/user-attachments/assets/33f1cab2-2e4c-4b63-b1cd-2a04c1f6c858" alt="GIF de Demonstração do Sistema" width="850px">
   <p><i>Visualização da automação de cadastro e gerenciamento de produtos.</i></p>
 </div>
 
+---
 ---
 
 ## 🚀 Funcionalidades
