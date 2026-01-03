@@ -319,12 +319,6 @@ def setup_demo():
     db.drop_all()
     db.create_all()
 
-    # 2. Cria Usuário Admin
-    senha_hash = bcrypt.generate_password_hash('123456').decode('utf-8')
-    # Nota: Usando 'password' conforme a correção que fizemos antes
-    admin = Usuario(username='Admin', email='admin@example.com', password=senha_hash)
-    db.session.add(admin)
-
     # 3. Cria 3 Categorias
     cat1 = Categoria(nome='Eletrônicos' )
     cat2 = Categoria(nome='Móveis' )
