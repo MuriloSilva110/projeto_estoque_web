@@ -1,14 +1,30 @@
-from flask import Flask, render_template, request , redirect, url_for, flash
+from flask import Flask, render_template, request , redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from forms import CategoriaForm, produtoForm, FornecedorForm, CadastroForm, LoginForm
+from functools import wraps
 import os
 
 # Carrega as variáveis de ambiente do arquivo .env
 load_dotenv()
 
+# O Nosso Decorador de Segurança
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        # --- A LÓGICA DE SEGURANÇA FICA AQUI ---
+        # 1. Pegue o token do header 'Authorization'
+        token = request.headers.get('Authorization')
+        
+        # 2. SEU DESAFIO:
+        # Se o token não for "MucaSecretToken123", retorne o erro 403.
+        # (É a mesma lógica que você fez antes)
+        if not token or token != 'MucaSecretToken123':
+            return jsonify({"Erro": "Acesso negado. Token inválido."}), 403
+        return f(*args, **kwargs)
+    return decorated
 # cria a instância do Flask
 app = Flask(__name__)
 
@@ -76,8 +92,6 @@ with app.app_context():
     print(">>> TABELAS CRIADAS COM SUCESSO! <<<")
 # ----------------------------------------
 
-if __name__ == '__main__':
-    app.run(debug=True)
 # Rota Home
 @app.route('/')
 def home():
@@ -353,5 +367,85 @@ def setup_demo():
     db.session.commit()
 
     return "<h1>Banco de Dados Populado com Sucesso! 🚀</h1><p>3 Categorias, 4 Fornecedores e 6 Produtos criados.</p>"
+
+
+
+@app.route('/api/teste', methods=['GET'])
+def api_teste():
+    objeto_produtos = Produto.query.all()
+    lista_json = []
+
+    for produto in objeto_produtos: 
+        temp_dict = {'id':produto.id,
+                     'nome_produto':produto.nome,
+                     'preco': produto.preco,
+                     'cod': produto.codigo_interno,
+                     'cat' : produto.categoria.nome,
+                     'forn' : produto.fornecedor.nome,
+                     'forn_tel' : produto.fornecedor.telefone
+                    }
+        lista_json.append(temp_dict)
+    return jsonify(lista_json)
+
+
+# Rota para CRIAR produto via API (Note o método POST)
+@app.route('/api/produtos/criar', methods=['POST'])
+@token_required
+def api_criar_produto():
+    # 1. Recebe o JSON que foi enviado pelo "cliente" (app/robô)
+    dados_recebidos = request.json
+
+    novo_produto = Produto(nome=dados_recebidos['nome'],
+                           preco=dados_recebidos['preco'],
+                           codigo_interno=dados_recebidos['codigo_interno'],
+                           categoria_id=dados_recebidos['categoria'],
+                           fornecedor_id=dados_recebidos['fornecedor'],
+                           )
+    
+    # ... escreva a criação e o commit no banco aqui ...
+    db.session.add(novo_produto)
+    db.session.commit()
+
+    return jsonify({"mensagem": "Produto criado com sucesso via API!"})
+
+
+# Rota para deletar produto via API (Note o método DELETE)
+@app.route('/api/produtos/deletar/<int:produto_id>/', methods=['DELETE'])
+@token_required
+def api_deletar_produto(produto_id):
+
+    produto_alvo = Produto.query.get_or_404(produto_id)
+    
+    db.session.delete(produto_alvo)
+    db.session.commit()
+
+    return jsonify({"Mensagem": "Tchau, produto! Deletado com sucesso"})
+
+
+# Rota para ATUALIZAR produto (Método PUT)
+@app.route('/api/produtos/<int:produto_id>', methods=['PUT'])
+@token_required
+def api_atualizar_produto(produto_id):
+    # 1. Busca o produto no banco
+    produto_editado = Produto.query.get_or_404(produto_id)
+    
+    # 2. Pega os novos dados que chegaram no JSON
+    dados_novos = request.json
+    
+    # 3. SEU DESAFIO:
+    # Atualize o 'nome' e o 'preco' do produto_editado usando os dados_novos.
+    # Exemplo: produto_editado.nome = ...
+    
+    produto_editado.nome = dados_novos.get('nome', produto_editado.nome)
+    produto_editado.preco = dados_novos.get('preco', produto_editado.preco)
+    produto_editado.codigo_interno = dados_novos.get('codigo_interno', produto_editado.codigo_interno)
+    produto_editado.categoria_id = dados_novos.get('categoria', produto_editado.categoria_id)
+    produto_editado.fornecedor_id = dados_novos.get('fornecedor', produto_editado.fornecedor_id)
+    db.session.commit()
+
+    return jsonify({"mensagem": "Produto renovado com sucesso!"})
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
