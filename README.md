@@ -35,22 +35,21 @@ Portfólio no LinkedIn: Murilo Silva
 
 🚀 Como Executar o Ambiente de Desenvolvimento
 Clone o repositório:
-
-Bash
-
+```bash
 git clone https://github.com/MuriloSilva110/projeto_estoque_web.git
 cd projeto_estoque_web
+```
 Configuração do Ambiente Virtual:
-
-Bash
-
+```bash
 python -m venv venv
+```
 # Ativação no Windows:
+```bash
 venv\Scripts\activate
+```
 Dependências e Execução:
-
-Bash
-
+```bash
 pip install -r requirements.txt
 python app.py
+```
 <p align="center">Estudante de ADS na Universidade Santo Amaro (Unisa) 🚀</p>
